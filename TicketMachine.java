@@ -17,17 +17,42 @@ public class TicketMachine
     private int balance;
     // The total amount of money collected by this machine.
     private int total;
+    // The status of the ticket machine.
+    private int status;
+    
+    private float discount;
+    
+    private float savings;
 
     /**
      * Create a machine that issues tickets of the given price.
      * Note that the price must be greater than zero, and there
      * are no checks to ensure this.
      */
-    public TicketMachine(int ticketCost)
+    public TicketMachine()
     {
-        price = ticketCost;
+        price = 1000;
         balance = 0;
         total = 0;
+        status = 0;
+        discount = 0;
+        savings = 0;
+        
+    }
+    
+    public TicketMachine(int ticketPrice)
+    {
+        price = ticketPrice;
+        balance = 0;
+        total = 0;
+        status = 0;
+    }
+    
+    public int emptyMachine()
+    {
+      int dispenseAmount = total;
+      total = 0;
+      return dispenseAmount;
     }
 
     /**
@@ -46,13 +71,43 @@ public class TicketMachine
     {
         return balance;
     }
-
+    
+    /**
+     * Return the total amount of money the machine has collected.
+     */
+    public int getTotal()
+    {
+        return total;
+    }
     /**
      * Receive an amount of money in cents from a customer.
      */
     public void insertMoney(int amount)
     {
         balance = balance + amount;
+    }
+    
+    public void showPrice(){
+        System.out.println("# The price of a ticket is " + price + " cents.\n");
+    }
+    
+    public void setPrice(int amount)
+    {
+        price = amount;
+    }
+    
+    public void setDiscount(float percentage)
+    {
+        discount = percentage;
+    }
+    
+    public void setSavings()
+    {
+        savings = price * discount;
+    }
+    
+    public void prompt(){
+        System.out.println("# Please insert the correct amount of money.\n");
     }
 
     /**
@@ -62,17 +117,31 @@ public class TicketMachine
      */
     public void printTicket()
     {
-        // Simulate the printing of a ticket.
-        System.out.println("##################");
-        System.out.println("# The BlueJ Line");
-        System.out.println("# Ticket");
-        System.out.println("# " + price + " cents.");
-        System.out.println("##################");
-        System.out.println();
-
-        // Update the total collected with the balance.
-        total = total + balance;
-        // Clear the balance.
-        balance = 0;
+        int amountLeftToPlay = price - balance;
+        
+        if(amountLeftToPlay <= 0) {
+            // Simulate the printing of a ticket.
+            System.out.println("##################");
+            System.out.println("# The BlueJ Line");
+            System.out.println("# Ticket");
+            System.out.println("# " + price + " cents.");
+            System.out.println("##################");
+            System.out.println();
+    
+            // Update the total collected with the balance.
+            total += price;
+            // Clear the balance.
+            balance -= price;
+        
+        }
+        else {
+            System.out.println("# ERRROR");
+            System.out.println();
+        }
+    }
+    
+    public void empty()
+    {
+        total = 0;
     }
 }
